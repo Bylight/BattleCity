@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 
 /**
  * v0.03更新
- * 	1. 重写paint()方法画出代表坦克的实心圆
+ * 	1. 重写paint()方法（窗口重画时自动调用）画出代表坦克的实心圆
  * 	2. 使用setBackground()方法设置背景颜色
  * @author javen
  *
@@ -16,10 +16,11 @@ import java.awt.event.WindowEvent;
 
 @SuppressWarnings("serial")
 public class BasicFrame extends Frame {
+	
 	// 画出代表坦克的实心圆
 	// g为前景色
 	@Override
-	public void print(Graphics g) {
+	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		Color c = g.getColor();	// c用于保存g的初始颜色
 		
@@ -46,5 +47,6 @@ public class BasicFrame extends Frame {
 		//设置背景颜色
 		setBackground(Color.GREEN);
 	}
+	
 	
 }
