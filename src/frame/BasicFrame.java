@@ -10,8 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.06
- * 	继承KeyAdpater类的实现键盘监听
+ * v0.07
+ * 	在Tank类中实现draw()方法和keyPressed()方法
  * @author bylight
  *
  */
@@ -21,25 +21,19 @@ public class BasicFrame extends Frame {
 	private static final int FRAME_WIDTH = 800;
 	private static final int FRAME_HEIGHT = 600;
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
-	private static final int MOVE_LENGTH = 5;
-	private static final Color TANK_COLOR = Color.RED;
 	private static int x_tank = 50;
 	private static int y_tank = 50;
 	//虚拟缓存
 	private Image offScreenImage = null;
 	
+	private Tank myTank = new Tank(x_tank, y_tank);
 	
 	// 画出代表坦克的实心圆
 	// g为前景色
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
-		Color c = g.getColor();	// c用于保存g的初始颜色
-		
-		g.setColor(TANK_COLOR);	// 设置颜色为红
-		g.fillOval(x_tank, y_tank, 30, 30);	// 参数依次为x, y, width, height
-		
-		g.setColor(c); 	//恢复g的初始颜色
+		myTank.draw(g);
 	}
 
 	public void lauchFrame() {
@@ -119,16 +113,7 @@ public class BasicFrame extends Frame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			// TODO Auto-generated method stub
-			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-				x_tank += MOVE_LENGTH;
-			} else if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-				x_tank -= MOVE_LENGTH;
-			} else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
-				y_tank -= MOVE_LENGTH;
-			} else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
-				y_tank += MOVE_LENGTH;
-			}
+			myTank.keyPressed(e);
 		}
 		
 	}
