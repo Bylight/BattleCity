@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.05
- * 	定义了常量
+ * v0.06
+ * 	继承KeyAdpater类的实现键盘监听
  * @author bylight
  *
  */
@@ -19,7 +21,8 @@ public class BasicFrame extends Frame {
 	private static final int FRAME_WIDTH = 800;
 	private static final int FRAME_HEIGHT = 600;
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
-	private static final int MOVE_LENTGH = 5;
+	private static final int MOVE_LENGTH = 5;
+	private static final Color TANK_COLOR = Color.RED;
 	private static int x_tank = 50;
 	private static int y_tank = 50;
 	//虚拟缓存
@@ -33,17 +36,14 @@ public class BasicFrame extends Frame {
 		// TODO Auto-generated method stub
 		Color c = g.getColor();	// c用于保存g的初始颜色
 		
-		g.setColor(Color.RED);	// 设置颜色为红
+		g.setColor(TANK_COLOR);	// 设置颜色为红
 		g.fillOval(x_tank, y_tank, 30, 30);	// 参数依次为x, y, width, height
 		
 		g.setColor(c); 	//恢复g的初始颜色
-		
-		y_tank += MOVE_LENTGH;
 	}
 
 	public void lauchFrame() {
 		
-		setVisible(true);
 		setLocation(400, 300);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		//不允许改变窗口大小
@@ -61,27 +61,11 @@ public class BasicFrame extends Frame {
 		
 		//Runnable接口实现类的实例作为Thread的target参数传入Thread
 		new Thread(new PaintThread()).start();
-	}
-	
-	//实现Runnable接口的内部类
-	private class PaintThread implements Runnable {
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			while (true) {
-				//调用Frame的repaint()
-				//Frame中实际调用顺序repaint()->update()->paint()
-				repaint();
-				
-				//通过sleep方法令线程定时休眠
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+		
+		this.addKeyListener(new KeyMonitor());
+		
+		setVisible(true);
+		
 	}
 	
 	//重写update
@@ -105,5 +89,47 @@ public class BasicFrame extends Frame {
 		
 		//画笔g是用于画前台缓存
 		g.drawImage(offScreenImage, 0, 0, null);
+	}
+
+	//实现Runnable接口的内部类
+	private class PaintThread implements Runnable {
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			while (true) {
+				//调用Frame的repaint()
+				//Frame中实际调用顺序repaint()->update()->paint()
+				repaint();
+				
+				//通过sleep方法令线程定时休眠
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	//继承KeyAdpater的键盘监听类
+	//也可以通过实现KeyListener接口，但KeyListener接口中有三个方法必须实现，较不灵活
+	private class KeyMonitor extends KeyAdapter {
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			int key = e.getKeyCode();
+			if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+				x_tank += MOVE_LENGTH;
+			} else if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+				x_tank -= MOVE_LENGTH;
+			} else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+				y_tank -= MOVE_LENGTH;
+			} else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+				y_tank += MOVE_LENGTH;
+			}
+		}
+		
 	}
 }
