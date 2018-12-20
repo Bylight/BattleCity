@@ -8,21 +8,23 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.041更新
- * 	问题：v0.04版本中重画频率太快导致“闪烁现象”
- * 	思路：使用“双缓冲”消除闪烁现象
- *  解决方法：将所有东西画在虚拟缓存中，实际显示的是另一个缓存 
+ * v0.05
+ * 	定义了常量
  * @author bylight
  *
  */
 
 @SuppressWarnings("serial")
 public class BasicFrame extends Frame {
-	
+	private static final int FRAME_WIDTH = 800;
+	private static final int FRAME_HEIGHT = 600;
+	private static final Color BACKGROUND_COLOR = Color.WHITE;
+	private static final int MOVE_LENTGH = 5;
 	private static int x_tank = 50;
 	private static int y_tank = 50;
 	//虚拟缓存
 	private Image offScreenImage = null;
+	
 	
 	// 画出代表坦克的实心圆
 	// g为前景色
@@ -36,14 +38,14 @@ public class BasicFrame extends Frame {
 		
 		g.setColor(c); 	//恢复g的初始颜色
 		
-		y_tank += 5;
+		y_tank += MOVE_LENTGH;
 	}
 
 	public void lauchFrame() {
 		
 		setVisible(true);
 		setLocation(400, 300);
-		setSize(800, 600);
+		setSize(FRAME_WIDTH, FRAME_HEIGHT);
 		//不允许改变窗口大小
 		setResizable(false);
 		//匿名类实现关闭窗口
@@ -55,7 +57,7 @@ public class BasicFrame extends Frame {
 		//设置窗口标题
 		setTitle("坦克大战");
 		//设置背景颜色
-		setBackground(Color.GREEN);
+		setBackground(BACKGROUND_COLOR);
 		
 		//Runnable接口实现类的实例作为Thread的target参数传入Thread
 		new Thread(new PaintThread()).start();
@@ -86,15 +88,17 @@ public class BasicFrame extends Frame {
 	public void update(Graphics g) {
 		//初始化offScreenImage
 		if (offScreenImage == null) {
-			offScreenImage = this.createImage(800, 600);
+			offScreenImage = this.createImage(FRAME_WIDTH, FRAME_HEIGHT);
 		}
 		//获取offScreenImage的画笔
 		Graphics gOffScreen = offScreenImage.getGraphics();
-		//修改画笔颜色为背景色(此处为GREEN)
+		//修改画笔颜色为背景色
 		Color c = gOffScreen.getColor();
-		gOffScreen.setColor(Color.GREEN);
+		gOffScreen.setColor(BACKGROUND_COLOR);
 		//重画前刷新背景
-		gOffScreen.fillRect(0, 0, 800, 600);
+		gOffScreen.fillRect(0, 0, FRAME_WIDTH , FRAME_HEIGHT );
+		//还原画笔颜色
+		gOffScreen.setColor(c);
 		//将获取的画笔传入paint(使用offScreenImage的画笔
 		//即在offScreenImage上进行paint)
 		paint(gOffScreen);
