@@ -4,14 +4,16 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * v0.10
- * 	新增了Missile类，实现了draw()和move()
+ * v0.11
+ * 	重新计算Missile的坐标，保证其从tank的中心发射
  * @author bylight
  *
  */
 public class Missile {
 	private static final Color TANK_COLOR = Color.RED;
 	private static final int MOVE_LENGTH = 10;
+	private static final int WIDTH = 10;
+	private static final int HEIGHT = 10;
 	
 	private Tank.Direction dir;
 	private boolean left = false;
@@ -22,15 +24,15 @@ public class Missile {
 	private int y;
 	
 	public Missile(int x, int y, Tank.Direction dir){
-		this.x = x;
-		this.y = y;
+		this.x = x - WIDTH / 2;
+		this.y = y - HEIGHT / 2;
 		this.dir = dir;
 	}
 	
 	public void draw(Graphics g) {
 		Color c = g.getColor();
 		g.setColor(Color.BLACK);
-		g.fillOval(x, y, 10, 10);
+		g.fillOval(x, y, WIDTH, HEIGHT);
 		g.setColor(c);
 		
 		move();

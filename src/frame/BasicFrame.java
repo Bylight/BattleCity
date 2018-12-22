@@ -10,8 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.10
- * 	实例化了Missile类进行测试
+ * v0.11
+ * 	更新了Missile类的使用
  * @author bylight
  *
  */
@@ -26,9 +26,9 @@ public class BasicFrame extends Frame {
 	//虚拟缓存
 	private Image offScreenImage = null;
 	
-	private Tank myTank = new Tank(x_tank, y_tank);
+	private Tank myTank = new Tank(x_tank, y_tank, this);
 	
-	private Missile myMissile = new Missile(x_tank, y_tank, Tank.Direction.DOWN);
+	private Missile myMissile;
 	
 	// 画出代表坦克的实心圆
 	// g为前景色
@@ -36,7 +36,9 @@ public class BasicFrame extends Frame {
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		myTank.draw(g);
-		myMissile.draw(g);
+		if (myMissile != null) {
+			myMissile.draw(g);
+		}
 	}
 
 	public void lauchFrame() {
@@ -124,6 +126,9 @@ public class BasicFrame extends Frame {
 			// TODO Auto-generated method stub
 			myTank.keyPressed(e);
 		}
-		
+	}
+	
+	public void setMissile(Missile missile) {
+		this.myMissile = missile;
 	}
 }
