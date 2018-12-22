@@ -10,8 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.07
- * 	在Tank类中实现draw()方法和keyPressed()方法
+ * v0.09
+ * 	在keyMoniitor()中添加keyReleased()方法令按键松开时停下tank
  * @author bylight
  *
  */
@@ -109,6 +109,12 @@ public class BasicFrame extends Frame {
 	//继承KeyAdpater的键盘监听类
 	//也可以通过实现KeyListener接口，但KeyListener接口中有三个方法必须实现，较不灵活
 	private class KeyMonitor extends KeyAdapter {
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			// TODO Auto-generated method stub
+			myTank.keyReleased(e);
+		}
 
 		@Override
 		public void keyPressed(KeyEvent e) {

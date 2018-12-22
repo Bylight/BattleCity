@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 /**
- * v0.08
- * 	通过定义方向的枚举类Direction实现tank在按键后按方向自动移动(可用于实现敌方tank自动移动)
+ * v0.09
+ * 	添加keyReleased()方法令按键松开时停下tank(可用于让坦克朝多个方向走)
  * @author bylight
  *
  */
@@ -41,24 +41,12 @@ public class Tank {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-			left = false;
 			right = true;
-			up = false;
-			down = false;
 		} else if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
 			left = true;
-			right = false;
-			up = false;
-			down = false;
 		} else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
-			left = false;
-			right = false;
 			up = true;
-			down = false;
 		} else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
-			left = false;
-			right = false;
-			up = false;
 			down = true;
 		}
 		setDirection();
@@ -96,5 +84,19 @@ public class Tank {
 		case STOP:
 			break;
 		}
+	}
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
+			right = false;
+		} else if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
+			left = false;
+		} else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
+			up = false;
+		} else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+			down = false;
+		}
+		setDirection();
 	}
 }
