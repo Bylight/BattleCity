@@ -10,8 +10,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * v0.09
- * 	在keyMoniitor()中添加keyReleased()方法令按键松开时停下tank
+ * v0.10
+ * 	实例化了Missile类进行测试
  * @author bylight
  *
  */
@@ -28,12 +28,15 @@ public class BasicFrame extends Frame {
 	
 	private Tank myTank = new Tank(x_tank, y_tank);
 	
+	private Missile myMissile = new Missile(x_tank, y_tank, Tank.Direction.DOWN);
+	
 	// 画出代表坦克的实心圆
 	// g为前景色
 	@Override
 	public void paint(Graphics g) {
 		// TODO Auto-generated method stub
 		myTank.draw(g);
+		myMissile.draw(g);
 	}
 
 	public void lauchFrame() {

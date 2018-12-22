@@ -13,7 +13,8 @@ import java.awt.event.KeyEvent;
 public class Tank {
 	private static final Color TANK_COLOR = Color.RED;
 	private static final int MOVE_LENGTH = 5;
-	private enum Direction {
+	
+	public enum Direction {
 		LEFT, RIGHT, UP, DOWN, STOP
 	}
 	private Direction dir = Direction.STOP;
@@ -23,10 +24,12 @@ public class Tank {
 	private boolean down = false;
 	private int x;
 	private int y;
+	
 	public Tank(int x, int y){
 		this.x = x;
 		this.y = y;
 	}
+	
 	public void draw(Graphics g) {
 		Color c = g.getColor();	// c用于保存g的初始颜色
 		
@@ -64,9 +67,9 @@ public class Tank {
 			dir = Direction.DOWN;
 		} else {
 			dir = Direction.STOP;
-		}
-		
+		}	
 	}
+	
 	private void move() {
 		switch (dir) {
 		case UP:
@@ -85,6 +88,7 @@ public class Tank {
 			break;
 		}
 	}
+	
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
