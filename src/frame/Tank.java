@@ -5,14 +5,22 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 /**
- * v0.07
- * 	抽象出Tank类，在Tank类中实现draw()和keyPressed()
+ * v0.08
+ * 	通过定义方向的枚举类Direction实现tank在按键后按方向自动移动(可用于实现敌方tank自动移动)
  * @author bylight
  *
  */
 public class Tank {
 	private static final Color TANK_COLOR = Color.RED;
 	private static final int MOVE_LENGTH = 5;
+	private enum Direction {
+		LEFT, RIGHT, UP, DOWN, STOP
+	}
+	private Direction dir = Direction.STOP;
+	private boolean left = false;
+	private boolean right = false;
+	private boolean up = false;
+	private boolean down = false;
 	private int x;
 	private int y;
 	public Tank(int x, int y){
@@ -22,6 +30,7 @@ public class Tank {
 	public void draw(Graphics g) {
 		Color c = g.getColor();	// c用于保存g的初始颜色
 		
+		move();	//通过方向改变tank坐标 
 		g.setColor(TANK_COLOR);	// 设置颜色为红
 		g.fillOval(x, y, 30, 30);	// 参数依次为x, y, width, height
 		
@@ -32,13 +41,60 @@ public class Tank {
 		// TODO Auto-generated method stub
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_RIGHT || key == KeyEvent.VK_D) {
-			x += MOVE_LENGTH;
+			left = false;
+			right = true;
+			up = false;
+			down = false;
 		} else if (key == KeyEvent.VK_LEFT || key == KeyEvent.VK_A) {
-			x -= MOVE_LENGTH;
+			left = true;
+			right = false;
+			up = false;
+			down = false;
 		} else if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) {
-			y -= MOVE_LENGTH;
+			left = false;
+			right = false;
+			up = true;
+			down = false;
 		} else if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) {
+			left = false;
+			right = false;
+			up = false;
+			down = true;
+		}
+		setDirection();
+	}
+	
+	private void setDirection() {
+		// TODO Auto-generated method stub
+		if (left && !right && !up && !down) {
+			dir = Direction.LEFT;
+		} else if (!left && right && !up && !down) {
+			dir = Direction.RIGHT;
+		} else if (!left && !right && up && !down) {
+			dir = Direction.UP;
+		} else if (!left && !right && !up && down) {
+			dir = Direction.DOWN;
+		} else {
+			dir = Direction.STOP;
+		}
+		
+	}
+	private void move() {
+		switch (dir) {
+		case UP:
+			y -= MOVE_LENGTH;
+			break;
+		case DOWN:
 			y += MOVE_LENGTH;
+			break;
+		case LEFT:
+			x -= MOVE_LENGTH;
+			break;
+		case RIGHT:
+			x += MOVE_LENGTH;
+			break;
+		case STOP:
+			break;
 		}
 	}
 }
