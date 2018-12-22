@@ -5,9 +5,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 /**
- * v0.11
- * 	添加对空格和回车的监听，重载了构造方法，实现Missile对象的new和传递
- * 	存在问题：Missile方向取决于tank方向，而tank未移动时方向为stop
+ * v0.12
+ * 	绘制了炮筒并让Missile以炮筒方向飞行
  * @author bylight
  *
  */
@@ -22,6 +21,7 @@ public class Tank {
 		LEFT, RIGHT, UP, DOWN, STOP
 	}
 	private Direction dir = Direction.STOP;
+	private Direction toward = Direction.UP;
 	private boolean left = false;
 	private boolean right = false;
 	private boolean up = false;
@@ -47,6 +47,9 @@ public class Tank {
 		g.fillOval(x, y, WIDTH, HEIGHT);	// 参数依次为x, y, width, height
 		
 		g.setColor(c); 	//恢复g的初始颜色
+		
+		//绘制炮筒
+		drawToward(g);
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -70,7 +73,7 @@ public class Tank {
 	
 	private Missile setFire() {
 		// TODO Auto-generated method stub
-		Missile myMissile = new Missile(WIDTH / 2 + x, HEIGHT / 2 + y, dir);
+		Missile myMissile = new Missile(WIDTH / 2 + x, HEIGHT / 2 + y, toward); // 传递炮筒的direction
 		return myMissile;
 	}
 
@@ -87,6 +90,9 @@ public class Tank {
 		} else {
 			dir = Direction.STOP;
 		}	
+		if (dir != Direction.STOP) {
+			toward = dir;
+		}
 	}
 	
 	private void move() {
@@ -106,6 +112,31 @@ public class Tank {
 		case STOP:
 			break;
 		}
+	}
+	
+	//绘制炮筒
+	private void drawToward(Graphics g) {
+		Color c = g.getColor();
+		g.setColor(Color.BLACK);
+	
+		switch (toward) {
+		case UP:
+			g.drawLine(x + WIDTH / 2, y + HEIGHT /2, x + WIDTH / 2, y - 5);
+			break;
+		case DOWN:
+			g.drawLine(x + WIDTH / 2, y + HEIGHT /2, x + WIDTH / 2, y + 5 + HEIGHT);
+			break;
+		case LEFT:
+			g.drawLine(x + WIDTH / 2, y + HEIGHT /2, x - 5, y + HEIGHT / 2);
+			break;
+		case RIGHT:
+			g.drawLine(x + WIDTH / 2, y + HEIGHT /2, x + 5 + WIDTH, y + HEIGHT / 2);
+			break;
+		case STOP:
+			break;
+		}
+		
+		g.setColor(c);
 	}
 	
 	public void keyReleased(KeyEvent e) {
